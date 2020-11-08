@@ -4,6 +4,8 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -22,7 +24,7 @@ public class Student {
     private String lastName;
     @Column
     private LocalDateTime birthdate;
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "profile_id", referencedColumnName = "id")
-    private StudentProfile studentProfile;
+
+    @OneToMany(mappedBy = "student")
+    private List<Position> positions = new ArrayList<>();
 }

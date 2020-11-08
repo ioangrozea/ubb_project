@@ -3,7 +3,8 @@ package com.internshipfinder.demo.entity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -16,15 +17,13 @@ public class Position {
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
 
-    @ManyToOne
-    private Company company;
-    @OneToMany
-    private Set<Requirement> requirements;
     @Column
-    private String information;
+    private String description;
     @Column
-    private Integer nrPositions;
+    private Long numberOfPositions;
     @Column
-    private Integer nrOccupiedPositions;
+    private Long numberOccupied;
 
+    @ManyToMany(mappedBy = "position")
+    private List<Student> students = new ArrayList<>();
 }
