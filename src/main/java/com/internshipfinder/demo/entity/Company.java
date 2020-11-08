@@ -3,7 +3,6 @@ package com.internshipfinder.demo.entity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -12,18 +11,16 @@ import java.util.Set;
 @AllArgsConstructor
 @EqualsAndHashCode
 @Entity
-public class Student {
+public class Company {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
     @Column(nullable = false)
-    private String firstName;
-    @Column(nullable = false)
-    private String lastName;
+    private String name;
     @Column
-    private LocalDateTime birthdate;
-    @OneToMany(mappedBy = "student",
+    private String description;
+    @OneToMany(mappedBy = "company",
             cascade = CascadeType.ALL,
             orphanRemoval = true)
-    private Set<Application> applications = new HashSet<>();
+    private Set<Position> positions = new HashSet<>();
 }

@@ -1,53 +1,39 @@
 package com.internshipfinder.demo.entity;
 
+import com.internshipfinder.demo.entity.enums.Status;
 import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
 @Entity
 public class Application {
     @EmbeddedId
-    private ApplicationId id;
-
+    private ApplicationPK id;
     @ManyToOne
-    @JoinColumn(name = "fk_student", insertable = false, updatable = false)
+    @MapsId("student_id")
+    @JoinColumn(name = "student_id", nullable = false)
     private Student student;
     @ManyToOne
-    @JoinColumn(name = "fk_position", insertable = false, updatable = false)
+    @MapsId("position_id")
+    @JoinColumn(name = "position_id", nullable = false)
     private Position position;
-
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    public Application(Student student, Position position, Status status) {
-        this.id = new ApplicationId(student.getId(), position.getId());
-
-        this.student = student;
-        this.position = position;
-        this.status = status;
-
-        position.getStudents().add(student);
-        student.getPositions().add(position);
-    }
-
-    @Getter
-    @Setter
+    @Embeddable
     @NoArgsConstructor
     @AllArgsConstructor
-    @EqualsAndHashCode
-    @Embeddable
-    public static class ApplicationId implements Serializable {
-        private static final long serialVersionUID = 1L;
-
-        @Column(name = "fk_student")
-        private Long studentId;
-        @Column(name = "fk_position")
+    @Getter
+    @Setter
+    public static class ApplicationPK implements Serializable{
+        @Column(name = "position_id")
         private Long positionId;
+        @Column(name = "student_id")
+        private Long studentId;
     }
 }
