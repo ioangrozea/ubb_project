@@ -20,6 +20,10 @@ public class Student {
     private String firstName;
     @Column(nullable = false)
     private String lastName;
+    @Column(nullable = false)
+    private String username;
+    @Column(nullable = false)
+    private String password;
     @Column
     private LocalDateTime birthdate;
     @OneToMany(mappedBy = "student",

@@ -19,6 +19,10 @@ public class Company {
     private String name;
     @Column
     private String description;
+    @Column(nullable = false)
+    private String username;
+    @Column(nullable = false)
+    private String password;
     @OneToMany(mappedBy = "company",
             cascade = CascadeType.ALL,
             orphanRemoval = true)
