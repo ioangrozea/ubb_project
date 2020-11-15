@@ -32,7 +32,8 @@ public class PositionController {
 
     @PostMapping
     public ResponseEntity createPosition(@RequestBody PositionDTO positionDTO) {
-        return ResponseEntity.ok(this.positionService.createPosition(positionDTO));
+        this.positionService.createPosition(positionDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PutMapping("/{id}")

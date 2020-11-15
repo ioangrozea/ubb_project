@@ -1,5 +1,8 @@
 package com.internshipfinder.demo.persistence.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 import javax.persistence.*;
@@ -8,6 +11,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
+@Builder
 @Entity
 public class Position {
     @Id
@@ -19,7 +23,7 @@ public class Position {
     private String description;
     @Column
     private Long numberOfPositions;
+    @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
     private Company company;
-
 }

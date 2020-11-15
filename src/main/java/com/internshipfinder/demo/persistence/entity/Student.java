@@ -3,7 +3,7 @@ package com.internshipfinder.demo.persistence.entity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor
@@ -23,7 +23,7 @@ public class Student {
     @Column(nullable = false)
     private String lastName;
     @Column
-    private LocalDateTime birthdate;
+    private LocalDate birthdate;
     @Column
     private String description;
     @Lob

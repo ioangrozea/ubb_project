@@ -53,6 +53,7 @@ public class StudentService {
     public StudentDTO updateStudent(Long id, StudentDTO studentDTO) throws Exception {
         Student studentOptional = this.studentRepository.findById(id).orElseThrow(Exception::new);
 
+        studentDTO.setId(id);
         studentDTO.setPassword(passwordEncoder.encode(studentDTO.getPassword()));
         return this.modelMapper.map(this.studentRepository.save(modelMapper.map(studentDTO, Student.class)),
                 StudentDTO.class);

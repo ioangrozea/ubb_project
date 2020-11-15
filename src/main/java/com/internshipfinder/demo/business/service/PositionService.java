@@ -40,6 +40,7 @@ public class PositionService {
     public PositionDTO updatePosition(Long id, PositionDTO positionDTO) throws Exception {
         Position positionOptional = this.positionRepository.findById(id).orElseThrow(Exception::new);
 
+        positionDTO.setId(id);
         return  this.modelMapper.map(
                 this.positionRepository.save(modelMapper.map(positionDTO, Position.class)),
                 PositionDTO.class);

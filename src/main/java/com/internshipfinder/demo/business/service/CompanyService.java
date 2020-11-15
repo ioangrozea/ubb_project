@@ -52,6 +52,7 @@ public class CompanyService {
     public CompanyDTO updateCompany(Long id, CompanyDTO companyDTO) throws Exception {
         Company company = this.companyRepository.findById(id).orElseThrow(Exception::new);
 
+        companyDTO.setId(id);
         companyDTO.setPassword(passwordEncoder.encode(companyDTO.getPassword()));
         return this.modelMapper.map(
                 this.companyRepository.save(modelMapper.map(companyDTO, Company.class)),

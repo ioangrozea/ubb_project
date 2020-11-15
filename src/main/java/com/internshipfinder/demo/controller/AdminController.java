@@ -32,7 +32,8 @@ public class AdminController {
 
     @PostMapping
     public ResponseEntity createAdmin(@RequestBody AdminDTO adminDTO) {
-        return ResponseEntity.ok(this.adminService.createAdmin(adminDTO));
+        this.adminService.createAdmin(adminDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PutMapping("/{id}")

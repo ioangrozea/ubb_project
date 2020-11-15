@@ -1,10 +1,10 @@
 package com.internshipfinder.demo.business.dto;
 
-import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
-@Builder
+@NoArgsConstructor
 public class AdminDTO {
     private Long id;
     private String username;

@@ -51,6 +51,7 @@ public class AdminService {
     public AdminDTO updateAdmin(Long id, AdminDTO adminDTO) throws Exception {
         Admin admin = this.adminRepository.findById(id).orElseThrow(Exception::new);
 
+        adminDTO.setId(id);
         adminDTO.setPassword(passwordEncoder.encode(adminDTO.getPassword()));
         return this.modelMapper.map(
                 this.adminRepository.save(modelMapper.map(adminDTO, Admin.class)),
