@@ -1,4 +1,4 @@
-package com.internshipfinder.demo.entity;
+package com.internshipfinder.demo.persistence.entity;
 
 import lombok.*;
 
@@ -9,15 +9,17 @@ import javax.persistence.*;
 @AllArgsConstructor
 @EqualsAndHashCode
 @Entity
-public class Profile {
+public class Position {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
     @Column
+    private String title;
+    @Column
     private String description;
-    @Lob
-    private byte[] cv;
-    @OneToOne(fetch = FetchType.LAZY)
-    @MapsId
-    private Student student;
+    @Column
+    private Long numberOfPositions;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Company company;
+
 }

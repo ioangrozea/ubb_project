@@ -1,11 +1,9 @@
-package com.internshipfinder.demo.entity;
+package com.internshipfinder.demo.persistence.entity;
 
 import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -17,17 +15,17 @@ public class Student {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @Column(nullable = false)
-    private String firstName;
-    @Column(nullable = false)
-    private String lastName;
-    @Column(nullable = false)
     private String username;
     @Column(nullable = false)
     private String password;
+    @Column(nullable = false)
+    private String firstName;
+    @Column(nullable = false)
+    private String lastName;
     @Column
     private LocalDateTime birthdate;
-    @OneToMany(mappedBy = "student",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true)
-    private Set<Application> applications = new HashSet<>();
+    @Column
+    private String description;
+    @Lob
+    private byte[] cv;
 }

@@ -1,4 +1,4 @@
-package com.internshipfinder.demo.entity;
+package com.internshipfinder.demo.persistence.entity;
 
 import lombok.*;
 
@@ -23,6 +23,8 @@ public class Company {
     private String username;
     @Column(nullable = false)
     private String password;
+    @Column(nullable = false)
+    private boolean acceptedByAdmin;
     @OneToMany(mappedBy = "company",
             cascade = CascadeType.ALL,
             orphanRemoval = true)
