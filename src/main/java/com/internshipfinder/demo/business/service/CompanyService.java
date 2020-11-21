@@ -1,6 +1,7 @@
 package com.internshipfinder.demo.business.service;
 
 import com.internshipfinder.demo.business.dto.CompanyDTO;
+import com.internshipfinder.demo.business.dto.StudentDTO;
 import com.internshipfinder.demo.business.dto.UserDTO;
 import com.internshipfinder.demo.persistence.entity.Company;
 import com.internshipfinder.demo.persistence.repository.CompanyRepository;
@@ -35,10 +36,12 @@ public class CompanyService {
                 CompanyDTO.class);
     }
 
-    public boolean getCompanyByUsernameAndPassword(UserDTO userDTO) throws Exception {
-        this.companyRepository.findCompanyByUsernameAndPassword(userDTO.getUsername(),
-                passwordEncoder.encode(userDTO.getPassword()))
-                .orElseThrow(Exception::new);
+    public boolean getCompanyByUsername(UserDTO userDTO) throws Exception {
+        CompanyDTO foundCompanyDTO = this.modelMapper.map(this.companyRepository.findCompanyByUsername(userDTO.getUsername())
+                .orElseThrow(Exception::new), CompanyDTO.class);
+        if (this.passwordEncoder.matches(foundCompanyDTO.getPassword(), userDTO.getPassword())) {
+            throw new Exception();
+        }
         return true;
     }
 

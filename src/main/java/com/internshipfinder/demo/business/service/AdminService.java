@@ -1,6 +1,7 @@
 package com.internshipfinder.demo.business.service;
 
 import com.internshipfinder.demo.business.dto.AdminDTO;
+import com.internshipfinder.demo.business.dto.StudentDTO;
 import com.internshipfinder.demo.business.dto.UserDTO;
 import com.internshipfinder.demo.persistence.entity.Admin;
 import com.internshipfinder.demo.persistence.repository.AdminRepository;
@@ -20,10 +21,12 @@ public class AdminService {
     private final PasswordEncoder passwordEncoder;
     private final AdminRepository adminRepository;
 
-    public boolean getAdminByUsernameAndPassword(UserDTO userDTO) throws Exception {
-        adminRepository.findAdminByUsernameAndPassword(userDTO.getUsername(),
-                passwordEncoder.encode(userDTO.getPassword()))
-                .orElseThrow(Exception::new);
+    public boolean getAdminByUsername(UserDTO userDTO) throws Exception {
+        AdminDTO foundAdminDTO = this.modelMapper.map(this.adminRepository.findAdminByUsername(userDTO.getUsername())
+                .orElseThrow(Exception::new), AdminDTO.class);
+        if (this.passwordEncoder.matches(foundAdminDTO.getPassword(), userDTO.getPassword())) {
+            throw new Exception();
+        }
         return true;
     }
 

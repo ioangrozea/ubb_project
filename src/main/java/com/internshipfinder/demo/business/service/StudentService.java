@@ -36,10 +36,12 @@ public class StudentService {
                 StudentDTO.class);
     }
 
-    public boolean getStudentByUsernameAndPassword(UserDTO userDTO) throws Exception {
-        this.studentRepository.findStudentByUsernameAndPassword(userDTO.getUsername(),
-                passwordEncoder.encode(userDTO.getPassword()))
-                .orElseThrow(Exception::new);
+    public boolean getStudentByUsername(UserDTO userDTO) throws Exception {
+        StudentDTO foundStudentDTO = this.modelMapper.map(this.studentRepository.findStudentByUsername(userDTO.getUsername())
+                .orElseThrow(Exception::new), StudentDTO.class);
+        if (this.passwordEncoder.matches(foundStudentDTO.getPassword(), userDTO.getPassword())) {
+            throw new Exception();
+        }
         return true;
     }
 

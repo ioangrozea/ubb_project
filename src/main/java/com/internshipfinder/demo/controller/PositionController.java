@@ -5,6 +5,7 @@ import com.internshipfinder.demo.business.service.PositionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
@@ -16,11 +17,13 @@ public class PositionController {
     private final PositionService positionService;
 
     @GetMapping
+    @PreAuthorize("hasRole('COMPANY') or hasRole('ADMIN') or hasRole('STUDENT')")
     public ResponseEntity<Set<PositionDTO>> getAllPositions() {
         return ResponseEntity.ok(this.positionService.getAllPositions());
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('COMPANY') or hasRole('ADMIN') or hasRole('STUDENT')")
     public ResponseEntity<PositionDTO> findPositionById(@PathVariable Long id) {
         try {
             return ResponseEntity.ok(this.positionService.getPositionById(id));
@@ -31,12 +34,14 @@ public class PositionController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('COMPANY')")
     public ResponseEntity createPosition(@RequestBody PositionDTO positionDTO) {
         this.positionService.createPosition(positionDTO);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('COMPANY') or hasRole('ADMIN')")
     public ResponseEntity<PositionDTO> updatePosition(@PathVariable Long id, @RequestBody PositionDTO positionDTO) {
         try {
             return ResponseEntity.ok(this.positionService.updatePosition(id, positionDTO));
@@ -47,6 +52,7 @@ public class PositionController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('COMPANY') or hasRole('ADMIN')")
     public ResponseEntity deletePosition(@PathVariable Long id) {
         this.positionService.deletePosition(id);
         return ResponseEntity.ok().build();

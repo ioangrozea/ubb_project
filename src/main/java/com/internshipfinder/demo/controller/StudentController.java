@@ -5,6 +5,7 @@ import com.internshipfinder.demo.business.service.StudentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
@@ -16,11 +17,13 @@ public class StudentController {
     private final StudentService studentService;
 
     @GetMapping
+    @PreAuthorize("hasRole('COMPANY') or hasRole('ADMIN') or hasRole('STUDENT')")
     public ResponseEntity<Set<StudentDTO>> getAllStudents() {
         return ResponseEntity.ok(this.studentService.getStudents());
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('COMPANY') or hasRole('ADMIN') or hasRole('STUDENT')")
     public ResponseEntity<StudentDTO> findStudentById(@PathVariable Long id) {
         try {
             return ResponseEntity.ok(this.studentService.getStudentById(id));
@@ -30,12 +33,13 @@ public class StudentController {
         }
     }
 
-    @PostMapping
+    @PostMapping("/signup")
     public ResponseEntity createStudent(@RequestBody StudentDTO studentDTO) {
         this.studentService.createStudent(studentDTO);
         return ResponseEntity.status(HttpStatus.CREATED).build();    }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STUDENT')")
     public ResponseEntity<StudentDTO> updateStudent(@PathVariable Long id, @RequestBody StudentDTO studentDTO) {
         try {
             return ResponseEntity.ok(this.studentService.updateStudent(id, studentDTO));
@@ -46,6 +50,7 @@ public class StudentController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STUDENT')")
     public ResponseEntity deleteStudent(@PathVariable Long id) {
         this.studentService.deleteStudent(id);
         return ResponseEntity.ok().build();
