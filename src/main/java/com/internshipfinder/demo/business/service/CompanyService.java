@@ -1,7 +1,6 @@
 package com.internshipfinder.demo.business.service;
 
 import com.internshipfinder.demo.business.dto.CompanyDTO;
-import com.internshipfinder.demo.business.dto.StudentDTO;
 import com.internshipfinder.demo.business.dto.UserDTO;
 import com.internshipfinder.demo.persistence.entity.Company;
 import com.internshipfinder.demo.persistence.repository.CompanyRepository;
@@ -56,10 +55,20 @@ public class CompanyService {
         Company company = this.companyRepository.findById(id).orElseThrow(Exception::new);
 
         companyDTO.setId(id);
-        companyDTO.setPassword(passwordEncoder.encode(companyDTO.getPassword()));
-        return this.modelMapper.map(
-                this.companyRepository.save(modelMapper.map(companyDTO, Company.class)),
-                CompanyDTO.class);
+        if (companyDTO.getName() != null && !companyDTO.getName().isEmpty()) {
+            company.setName(companyDTO.getName());
+        }
+        if (companyDTO.getDescription() != null && !companyDTO.getDescription().isEmpty()) {
+            company.setDescription(companyDTO.getDescription());
+        }
+        if (companyDTO.getUsername() != null && !companyDTO.getUsername().isEmpty()) {
+            company.setUsername(companyDTO.getUsername());
+        }
+        if (companyDTO.getPassword() != null && !companyDTO.getPassword().isEmpty()) {
+            company.setPassword(this.passwordEncoder.encode(companyDTO.getPassword()));
+        }
+
+        return this.modelMapper.map(this.companyRepository.save(company), CompanyDTO.class);
     }
 
     public void deleteCompany(Long companyId) {
