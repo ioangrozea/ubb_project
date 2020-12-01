@@ -58,4 +58,15 @@ public class PositionController {
         this.positionService.deletePosition(id);
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping("company/{companyId}")
+    @PreAuthorize("hasRole('COMPANY') or hasRole('ADMIN') or hasRole('STUDENT')")
+    public ResponseEntity<Set<PositionDTO>> findAllCompanyPositions(@PathVariable Long companyId) {
+        try {
+            return ResponseEntity.ok(this.positionService.getAllCompanyPositions(companyId));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
 }

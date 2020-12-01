@@ -26,6 +26,14 @@ public class PositionService {
                 .map(c -> this.modelMapper.map(c, PositionDTO.class))
                 .collect(Collectors.toSet());
     }
+    public Set<PositionDTO> getAllCompanyPositions(Long companyId) {
+        Iterable<Position> positions = this.positionRepository.getAllByCompanyId(companyId);
+        return StreamSupport
+                .stream(positions.spliterator(), false)
+                .map(c -> this.modelMapper.map(c, PositionDTO.class))
+                .collect(Collectors.toSet());
+    }
+
 
     public PositionDetailsDTO getPositionById(Long positionId) throws Exception {
         return modelMapper.map(
@@ -41,8 +49,6 @@ public class PositionService {
     }
 
     public PositionDTO updatePosition(Long id, PositionDTO positionDTO) throws Exception {
-        Position positionOptional = this.positionRepository.findById(id).orElseThrow(Exception::new);
-
         positionDTO.setId(id);
         return  this.modelMapper.map(
                 this.positionRepository.save(modelMapper.map(positionDTO, Position.class)),
