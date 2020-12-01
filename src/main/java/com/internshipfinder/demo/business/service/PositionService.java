@@ -1,12 +1,14 @@
 package com.internshipfinder.demo.business.service;
 
 import com.internshipfinder.demo.business.dto.PositionDTO;
+import com.internshipfinder.demo.business.dto.PositionDetailsDTO;
 import com.internshipfinder.demo.persistence.entity.Position;
 import com.internshipfinder.demo.persistence.repository.PositionRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -25,13 +27,14 @@ public class PositionService {
                 .collect(Collectors.toSet());
     }
 
-    public PositionDTO getPositionById(Long positionId) throws Exception {
+    public PositionDetailsDTO getPositionById(Long positionId) throws Exception {
         return modelMapper.map(
                 this.positionRepository.findById(positionId).orElseThrow(Exception::new),
-                PositionDTO.class);
+                PositionDetailsDTO.class);
     }
 
     public PositionDTO createPosition(PositionDTO positionDTO) {
+        positionDTO.setCreatedAt(LocalDate.now());
         return this.modelMapper.map(
                 this.positionRepository.save(this.modelMapper.map(positionDTO, Position.class)),
                 PositionDTO.class);

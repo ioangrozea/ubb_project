@@ -13,7 +13,4 @@ public class StudentDTO {
     private String password;
     private String firstName;
     private String lastName;
-    private LocalDate birthdate;
-    private String description;
-    private byte[] cv;
 }

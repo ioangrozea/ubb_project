@@ -21,13 +21,13 @@ public class AdminService {
     private final PasswordEncoder passwordEncoder;
     private final AdminRepository adminRepository;
 
-    public boolean getAdminByUsername(UserDTO userDTO) throws Exception {
+    public AdminDTO getAdminByUsername(UserDTO userDTO) throws Exception {
         AdminDTO foundAdminDTO = this.modelMapper.map(this.adminRepository.findAdminByUsername(userDTO.getUsername())
                 .orElseThrow(Exception::new), AdminDTO.class);
-        if (this.passwordEncoder.matches(foundAdminDTO.getPassword(), userDTO.getPassword())) {
+        if (!this.passwordEncoder.matches(userDTO.getPassword(), foundAdminDTO.getPassword())) {
             throw new Exception();
         }
-        return true;
+        return foundAdminDTO;
     }
 
     public Set<AdminDTO> getAdmins() {

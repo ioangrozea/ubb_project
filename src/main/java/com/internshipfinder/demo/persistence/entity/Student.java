@@ -22,10 +22,4 @@ public class Student {
     private String firstName;
     @Column(nullable = false)
     private String lastName;
-    @Column
-    private LocalDate birthdate;
-    @Column
-    private String description;
-    @Lob
-    private byte[] cv;
 }

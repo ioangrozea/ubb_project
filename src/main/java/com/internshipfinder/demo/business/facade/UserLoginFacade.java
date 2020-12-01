@@ -1,5 +1,8 @@
 package com.internshipfinder.demo.business.facade;
 
+import com.internshipfinder.demo.business.dto.AdminDTO;
+import com.internshipfinder.demo.business.dto.CompanyDTO;
+import com.internshipfinder.demo.business.dto.StudentDTO;
 import com.internshipfinder.demo.business.dto.UserDTO;
 import com.internshipfinder.demo.business.security.JwtTokenProvider;
 import com.internshipfinder.demo.business.service.AdminService;
@@ -24,22 +27,22 @@ public class UserLoginFacade {
             HttpHeaders httpHeaders = new HttpHeaders();
             switch (userDTO.getUserType()) {
                 case ROLE_ADMIN:
-                    this.adminService.getAdminByUsername(userDTO);
+                    AdminDTO adminDTO = this.adminService.getAdminByUsername(userDTO);
                     httpHeaders = new HttpHeaders();
                     httpHeaders.add("Authorization", "Bearer " +
-                            jwtTokenProvider.createToken(userDTO.getUsername(), userDTO.getUserType()));
+                            jwtTokenProvider.createToken(userDTO.getUsername(), userDTO.getUserType(), adminDTO.getId()));
                     return ResponseEntity.ok().headers(httpHeaders).build(); //JWT header
                 case ROLE_COMPANY:
-                    this.companyService.getCompanyByUsername(userDTO);
+                    CompanyDTO companyDTO = this.companyService.getCompanyByUsername(userDTO);
                     httpHeaders = new HttpHeaders();
                     httpHeaders.add("Authorization", "Bearer " +
-                            jwtTokenProvider.createToken(userDTO.getUsername(), userDTO.getUserType()));
+                            jwtTokenProvider.createToken(userDTO.getUsername(), userDTO.getUserType(), companyDTO.getId()));
                     return ResponseEntity.ok().headers(httpHeaders).build(); //JWT header
                 case ROLE_STUDENT:
-                    this.studentService.getStudentByUsername(userDTO);
+                    StudentDTO studentDTO = this.studentService.getStudentByUsername(userDTO);
                     httpHeaders = new HttpHeaders();
                     httpHeaders.add("Authorization", "Bearer " +
-                            jwtTokenProvider.createToken(userDTO.getUsername(), userDTO.getUserType()));
+                            jwtTokenProvider.createToken(userDTO.getUsername(), userDTO.getUserType(), studentDTO.getId()));
                     return ResponseEntity.ok().headers(httpHeaders).build(); //JWT header
                 default:
                     return ResponseEntity.badRequest().build();

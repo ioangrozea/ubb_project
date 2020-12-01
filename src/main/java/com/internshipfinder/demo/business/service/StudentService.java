@@ -36,13 +36,13 @@ public class StudentService {
                 StudentDTO.class);
     }
 
-    public boolean getStudentByUsername(UserDTO userDTO) throws Exception {
+    public StudentDTO getStudentByUsername(UserDTO userDTO) throws Exception {
         StudentDTO foundStudentDTO = this.modelMapper.map(this.studentRepository.findStudentByUsername(userDTO.getUsername())
                 .orElseThrow(Exception::new), StudentDTO.class);
-        if (this.passwordEncoder.matches(foundStudentDTO.getPassword(), userDTO.getPassword())) {
+        if (!this.passwordEncoder.matches(userDTO.getPassword(), foundStudentDTO.getPassword())) {
             throw new Exception();
         }
-        return true;
+        return foundStudentDTO;
     }
 
     public StudentDTO createStudent(StudentDTO studentDTO) {
@@ -53,12 +53,23 @@ public class StudentService {
     }
 
     public StudentDTO updateStudent(Long id, StudentDTO studentDTO) throws Exception {
-        Student studentOptional = this.studentRepository.findById(id).orElseThrow(Exception::new);
+        Student student = this.studentRepository.findById(id).orElseThrow(Exception::new);
 
         studentDTO.setId(id);
-        studentDTO.setPassword(passwordEncoder.encode(studentDTO.getPassword()));
-        return this.modelMapper.map(this.studentRepository.save(modelMapper.map(studentDTO, Student.class)),
-                StudentDTO.class);
+        if (studentDTO.getFirstName() != null && !studentDTO.getFirstName().isEmpty()) {
+           student.setFirstName(studentDTO.getFirstName());
+        }
+        if (studentDTO.getLastName() != null && !studentDTO.getLastName().isEmpty()) {
+            student.setLastName(studentDTO.getLastName());
+        }
+        if (studentDTO.getUsername() != null && !studentDTO.getUsername().isEmpty()) {
+            student.setUsername(studentDTO.getUsername());
+        }
+        if (studentDTO.getPassword() != null && !studentDTO.getPassword().isEmpty()) {
+            student.setPassword(this.passwordEncoder.encode(studentDTO.getPassword()));
+        }
+
+        return this.modelMapper.map(this.studentRepository.save(student), StudentDTO.class);
     }
 
     public void deleteStudent(Long studentId) {

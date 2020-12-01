@@ -11,14 +11,13 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class PositionDTO {
+public class PositionDetailsDTO {
     private Long id;
     private String title;
+    private String description;
     private Long numberOfPositions;
     private LocalDate createdAt;
     private Long companyId;
     private String companyName;
-    private String description;
     private String url;
-    private String email;
 }

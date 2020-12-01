@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Objects;
 
 @Data
@@ -20,10 +21,16 @@ public class Position {
     private Long id;
     @Column
     private String title;
-    @Column
+    @Column(length = 5000)
     private String description;
     @Column
+    private String url;
+    @Column
+    private String email;
+    @Column
     private Long numberOfPositions;
+    @Column
+    private LocalDate createdAt;
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
     private Company company;
@@ -42,6 +49,6 @@ public class Position {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, description, numberOfPositions);
+        return Objects.hash(id, title, description, numberOfPositions, company.getName());
     }
 }

@@ -36,13 +36,13 @@ public class CompanyService {
                 CompanyDTO.class);
     }
 
-    public boolean getCompanyByUsername(UserDTO userDTO) throws Exception {
+    public CompanyDTO getCompanyByUsername(UserDTO userDTO) throws Exception {
         CompanyDTO foundCompanyDTO = this.modelMapper.map(this.companyRepository.findCompanyByUsername(userDTO.getUsername())
                 .orElseThrow(Exception::new), CompanyDTO.class);
-        if (this.passwordEncoder.matches(foundCompanyDTO.getPassword(), userDTO.getPassword())) {
+        if (!this.passwordEncoder.matches(userDTO.getPassword(), foundCompanyDTO.getPassword())) {
             throw new Exception();
         }
-        return true;
+        return foundCompanyDTO;
     }
 
     public CompanyDTO createCompany(CompanyDTO companyDTO) {

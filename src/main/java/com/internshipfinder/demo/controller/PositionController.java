@@ -1,6 +1,7 @@
 package com.internshipfinder.demo.controller;
 
 import com.internshipfinder.demo.business.dto.PositionDTO;
+import com.internshipfinder.demo.business.dto.PositionDetailsDTO;
 import com.internshipfinder.demo.business.service.PositionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -24,7 +25,7 @@ public class PositionController {
 
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('COMPANY') or hasRole('ADMIN') or hasRole('STUDENT')")
-    public ResponseEntity<PositionDTO> findPositionById(@PathVariable Long id) {
+    public ResponseEntity<PositionDetailsDTO> findPositionById(@PathVariable Long id) {
         try {
             return ResponseEntity.ok(this.positionService.getPositionById(id));
         } catch (Exception e) {
