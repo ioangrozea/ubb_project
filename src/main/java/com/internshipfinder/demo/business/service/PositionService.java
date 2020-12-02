@@ -48,8 +48,9 @@ public class PositionService {
                 PositionDTO.class);
     }
 
-    public PositionDTO updatePosition(Long id, PositionDTO positionDTO) throws Exception {
+    public PositionDTO updatePosition(Long id, PositionDTO positionDTO){
         positionDTO.setId(id);
+        positionDTO.setCreatedAt(LocalDate.now());
         return  this.modelMapper.map(
                 this.positionRepository.save(modelMapper.map(positionDTO, Position.class)),
                 PositionDTO.class);
