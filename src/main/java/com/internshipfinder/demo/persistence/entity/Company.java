@@ -32,4 +32,16 @@ public class Company {
             cascade = CascadeType.ALL,
             orphanRemoval = true)
     private Set<Position> positions = new HashSet<>();
+
+    @Override
+    public String toString() {
+        return "Company{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", acceptedByAdmin=" + acceptedByAdmin +
+                '}';
+    }
 }

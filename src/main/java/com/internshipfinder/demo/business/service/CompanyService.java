@@ -74,4 +74,11 @@ public class CompanyService {
     public void deleteCompany(Long companyId) {
         this.companyRepository.deleteById(companyId);
     }
+
+
+    public void validateCompany(Long companyId) throws Exception {
+        Company company = this.companyRepository.findById(companyId).orElseThrow(Exception::new);
+        company.setAcceptedByAdmin(true);
+        this.companyRepository.save(company);
+    }
 }

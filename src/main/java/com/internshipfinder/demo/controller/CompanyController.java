@@ -56,4 +56,11 @@ public class CompanyController {
         this.companyService.deleteCompany(id);
         return ResponseEntity.ok().build();
     }
+
+    @PutMapping("/validate/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity validateCompany(@PathVariable Long id) throws Exception {
+        this.companyService.validateCompany(id);
+        return ResponseEntity.ok().build();
+    }
 }

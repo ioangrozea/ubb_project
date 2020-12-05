@@ -20,14 +20,15 @@ public class PositionService {
     private final ModelMapper modelMapper;
 
     public Set<PositionDTO> getAllPositions() {
-        Iterable<Position> positions = this.positionRepository.findAll();
+        Iterable<Position> positions = this.positionRepository.getAllByCompanyAcceptedByAdminOrderByCreatedAt(true);
         return StreamSupport
                 .stream(positions.spliterator(), false)
                 .map(c -> this.modelMapper.map(c, PositionDTO.class))
                 .collect(Collectors.toSet());
     }
+
     public Set<PositionDTO> getAllCompanyPositions(Long companyId) {
-        Iterable<Position> positions = this.positionRepository.getAllByCompanyId(companyId);
+        Iterable<Position> positions = this.positionRepository.getAllByCompanyIdOrderByCreatedAtDesc(companyId);
         return StreamSupport
                 .stream(positions.spliterator(), false)
                 .map(c -> this.modelMapper.map(c, PositionDTO.class))
@@ -48,10 +49,10 @@ public class PositionService {
                 PositionDTO.class);
     }
 
-    public PositionDTO updatePosition(Long id, PositionDTO positionDTO){
+    public PositionDTO updatePosition(Long id, PositionDTO positionDTO) {
         positionDTO.setId(id);
         positionDTO.setCreatedAt(LocalDate.now());
-        return  this.modelMapper.map(
+        return this.modelMapper.map(
                 this.positionRepository.save(modelMapper.map(positionDTO, Position.class)),
                 PositionDTO.class);
 
