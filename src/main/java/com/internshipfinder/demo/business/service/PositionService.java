@@ -9,6 +9,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -19,20 +20,20 @@ public class PositionService {
     private final PositionRepository positionRepository;
     private final ModelMapper modelMapper;
 
-    public Set<PositionDTO> getAllPositions() {
-        Iterable<Position> positions = this.positionRepository.getAllByCompanyAcceptedByAdminOrderByCreatedAt(true);
+    public List<PositionDTO> getAllPositions() {
+        List<Position> positions = this.positionRepository.getAllByCompanyAcceptedByAdminOrderByCreatedAtDesc(true);
         return StreamSupport
                 .stream(positions.spliterator(), false)
                 .map(c -> this.modelMapper.map(c, PositionDTO.class))
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());
     }
 
-    public Set<PositionDTO> getAllCompanyPositions(Long companyId) {
-        Iterable<Position> positions = this.positionRepository.getAllByCompanyIdOrderByCreatedAtDesc(companyId);
+    public List<PositionDTO> getAllCompanyPositions(Long companyId) {
+        List<Position> positions = this.positionRepository.getAllByCompanyIdOrderByCreatedAtDesc(companyId);
         return StreamSupport
                 .stream(positions.spliterator(), false)
                 .map(c -> this.modelMapper.map(c, PositionDTO.class))
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());
     }
 
 

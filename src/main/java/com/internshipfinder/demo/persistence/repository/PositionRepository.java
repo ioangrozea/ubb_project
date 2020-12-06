@@ -8,5 +8,5 @@ import java.util.Set;
 
 public interface PositionRepository extends CrudRepository<Position, Long> {
     List<Position> getAllByCompanyIdOrderByCreatedAtDesc(Long id);
-    List<Position> getAllByCompanyAcceptedByAdminOrderByCreatedAt(Boolean accepted);
+    List<Position> getAllByCompanyAcceptedByAdminOrderByCreatedAtDesc(Boolean accepted);
 }

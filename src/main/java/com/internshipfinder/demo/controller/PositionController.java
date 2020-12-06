@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Set;
+import java.util.List;
 
 @RestController
 @RequestMapping("position")
@@ -19,7 +19,7 @@ public class PositionController {
 
     @GetMapping
     @PreAuthorize("hasRole('COMPANY') or hasRole('ADMIN') or hasRole('STUDENT')")
-    public ResponseEntity<Set<PositionDTO>> getAllPositions() {
+    public ResponseEntity<List<PositionDTO>> getAllPositions() {
         return ResponseEntity.ok(this.positionService.getAllPositions());
     }
 
@@ -61,7 +61,7 @@ public class PositionController {
 
     @GetMapping("company/{companyId}")
     @PreAuthorize("hasRole('COMPANY') or hasRole('ADMIN') or hasRole('STUDENT')")
-    public ResponseEntity<Set<PositionDTO>> findAllCompanyPositions(@PathVariable Long companyId) {
+    public ResponseEntity<List<PositionDTO>> findAllCompanyPositions(@PathVariable Long companyId) {
         try {
             return ResponseEntity.ok(this.positionService.getAllCompanyPositions(companyId));
         } catch (Exception e) {
