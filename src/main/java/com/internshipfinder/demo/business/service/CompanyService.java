@@ -71,6 +71,17 @@ public class CompanyService {
         return this.modelMapper.map(this.companyRepository.save(company), CompanyDTO.class);
     }
 
+    public CompanyDTO acceptCompany(Long id) throws Exception {
+        Company company = this.companyRepository.findById(id).orElseThrow(Exception::new);
+        company.setAcceptedByAdmin(true);
+        return this.modelMapper.map(this.companyRepository.save(company), CompanyDTO.class);
+    }
+
+    public Boolean isCompanyAccepted(Long id) throws Exception {
+        Company company = this.companyRepository.findById(id).orElseThrow(Exception::new);
+        return company.isAcceptedByAdmin();
+    }
+
     public void deleteCompany(Long companyId) {
         this.companyRepository.deleteById(companyId);
     }

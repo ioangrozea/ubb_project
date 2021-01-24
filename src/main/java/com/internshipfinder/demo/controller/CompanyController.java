@@ -50,6 +50,28 @@ public class CompanyController {
         }
     }
 
+    @PatchMapping("/accept/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<CompanyDTO> allowCompany(@PathVariable Long id) {
+        try {
+            return ResponseEntity.ok(this.companyService.acceptCompany(id));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+
+    @GetMapping("/accept/{id}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('COMPANY')")
+    public ResponseEntity<Boolean> isCompanyAllowed(@PathVariable Long id) {
+        try {
+            return ResponseEntity.ok(this.companyService.isCompanyAccepted(id));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('COMPANY') or hasRole('ADMIN')")
     public ResponseEntity deleteCompany(@PathVariable Long id) {

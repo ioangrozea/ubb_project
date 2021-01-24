@@ -2,7 +2,9 @@ package com.internshipfinder.demo.business.service;
 
 import com.internshipfinder.demo.business.dto.PositionDTO;
 import com.internshipfinder.demo.business.dto.PositionDetailsDTO;
+import com.internshipfinder.demo.persistence.entity.Company;
 import com.internshipfinder.demo.persistence.entity.Position;
+import com.internshipfinder.demo.persistence.repository.CompanyRepository;
 import com.internshipfinder.demo.persistence.repository.PositionRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -18,6 +20,7 @@ import java.util.stream.StreamSupport;
 @AllArgsConstructor
 public class PositionService {
     private final PositionRepository positionRepository;
+    private final CompanyRepository companyRepository;
     private final ModelMapper modelMapper;
 
     public List<PositionDTO> getAllPositions() {
@@ -43,11 +46,17 @@ public class PositionService {
                 PositionDetailsDTO.class);
     }
 
-    public PositionDTO createPosition(PositionDTO positionDTO) {
+    public PositionDTO createPosition(PositionDTO positionDTO) throws Exception {
+        Company company = this.companyRepository.findById(positionDTO.getCompanyId()).orElseThrow(Exception::new);
+
+        if (company.isAcceptedByAdmin()) {
         positionDTO.setCreatedAt(LocalDate.now());
         return this.modelMapper.map(
                 this.positionRepository.save(this.modelMapper.map(positionDTO, Position.class)),
                 PositionDTO.class);
+        } else {
+            throw new Exception();
+        }
     }
 
     public PositionDTO updatePosition(Long id, PositionDTO positionDTO) {

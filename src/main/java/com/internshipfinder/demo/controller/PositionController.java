@@ -37,8 +37,12 @@ public class PositionController {
     @PostMapping
     @PreAuthorize("hasRole('COMPANY')")
     public ResponseEntity createPosition(@RequestBody PositionDTO positionDTO) {
-        this.positionService.createPosition(positionDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        try {
+            this.positionService.createPosition(positionDTO);
+            return ResponseEntity.status(HttpStatus.CREATED).build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
 
     @PutMapping("/{id}")

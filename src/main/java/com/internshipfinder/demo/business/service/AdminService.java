@@ -1,9 +1,11 @@
 package com.internshipfinder.demo.business.service;
 
 import com.internshipfinder.demo.business.dto.AdminDTO;
+import com.internshipfinder.demo.business.dto.CompanyDTO;
 import com.internshipfinder.demo.business.dto.StudentDTO;
 import com.internshipfinder.demo.business.dto.UserDTO;
 import com.internshipfinder.demo.persistence.entity.Admin;
+import com.internshipfinder.demo.persistence.entity.Company;
 import com.internshipfinder.demo.persistence.repository.AdminRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -55,10 +57,14 @@ public class AdminService {
         Admin admin = this.adminRepository.findById(id).orElseThrow(Exception::new);
 
         adminDTO.setId(id);
-        adminDTO.setPassword(passwordEncoder.encode(adminDTO.getPassword()));
-        return this.modelMapper.map(
-                this.adminRepository.save(modelMapper.map(adminDTO, Admin.class)),
-                AdminDTO.class);
+        if (adminDTO.getUsername() != null && !adminDTO.getUsername().isEmpty()) {
+            admin.setUsername(adminDTO.getUsername());
+        }
+        if (adminDTO.getPassword() != null && !adminDTO.getPassword().isEmpty()) {
+            admin.setPassword(this.passwordEncoder.encode(adminDTO.getPassword()));
+        }
+
+        return this.modelMapper.map(this.adminRepository.save(admin), AdminDTO.class);
     }
 
     public void deleteAdmin(Long adminId) {
