@@ -22,6 +22,6 @@ public class WebConfig implements WebMvcConfigurer {
                         HttpMethod.PUT.name(),
                         HttpMethod.DELETE.name(),
                         HttpMethod.PATCH.name())
-                .exposedHeaders("Authorization");
+                .exposedHeaders("Authorization", "Access-Control-Allow-Origin");
     }
 }
